@@ -10,11 +10,16 @@ namespace ProductApp.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+	   : base(options)
+		{
+		}
 
-        public DbSet<Product> Products { get; set; }
-    }
+		public DbSet<Product> Products { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+		}
+	}
 }
