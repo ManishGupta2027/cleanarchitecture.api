@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ProductApp.Application.Services.Products;
 using ProductApp.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -9,28 +10,20 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Application.CQRS.Commands
 {
-    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
-    {
-        private readonly ApplicationDbContext _context;
+	public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
+	{
+		private readonly IProductService _productService;
 
-        public DeleteProductCommandHandler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public DeleteProductCommandHandler(IProductService productService)
+		{
+			_productService = productService;
+		}
 
-        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
-        {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
-
-            if (product == null)
-            {
-                throw new Exception("Product not found");
-            }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
-    }
+		public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+		{
+			// Call the product service to delete the product
+			await _productService.DeleteProductAsync(request.Id);
+			return Unit.Value; // Return a unit value to signify completion
+		}
+	}
 }

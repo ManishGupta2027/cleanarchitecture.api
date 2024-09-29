@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ProductApp.Application.DTOs;
+using ProductApp.Application.Services.Products;
 using ProductApp.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -13,19 +14,19 @@ namespace ProductApp.Application.CQRS.Queries
 {
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductDto>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
+		private readonly IProductService _productService;
+		
 
-        public GetAllProductsQueryHandler(ApplicationDbContext context, IMapper mapper)
+        public GetAllProductsQueryHandler(IProductService productService)
         {
-            _context = context;
-            _mapper = mapper;
+			_productService = productService;
+			
         }
 
         public async Task<List<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var products = await _context.Products.ToListAsync(cancellationToken);
-            return _mapper.Map<List<ProductDto>>(products);
+			return await _productService.GetAllProductsAsync();
+          
         }
     }
 }

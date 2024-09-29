@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ProductApp.Application.DTOs;
+using ProductApp.Application.Services.Products;
 using ProductApp.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -9,31 +11,30 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Application.CQRS.Commands
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
-    {
-        private readonly ApplicationDbContext _context;
+	public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
+	{
+		private readonly IProductService _productService;
 
-        public UpdateProductCommandHandler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public UpdateProductCommandHandler(IProductService productService)
+		{
+			_productService = productService;
+		}
 
-        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
-        {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+		public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+		{
+			// Create a ProductDto object from the command properties
+			var productDto = new ProductDto
+			{
+				Id = request.Id,
+				Name = request.Name,
+				Price = request.Price,
+				Stock = request.Stock
+				// Map other properties as needed
+			};
 
-            if (product == null)
-            {
-                throw new Exception("Product not found");
-            }
-
-            product.Name = request.Name;
-            product.Price = request.Price;
-            product.Stock = request.Stock;
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
-    }
+			// Call the product service to update the product
+			await _productService.UpdateProductAsync(productDto);
+			return Unit.Value; // Return a unit value to signify completion
+		}
+	}
 }
