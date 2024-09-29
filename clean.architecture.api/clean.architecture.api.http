@@ -1,0 +1,6 @@
+@clean.architecture.api_HostAddress = http://localhost:5153
+
+GET {{clean.architecture.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
