@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using ProductApp.Domain.Entities;
+using ProductApp.Domain.Repositories;
 using ProductApp.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -9,28 +10,25 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Application.CQRS.Commands
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
-    {
-        private readonly ApplicationDbContext _context;
+	public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
+	{
+		private readonly IProductRepository _productRepository;
 
-        public CreateProductCommandHandler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public CreateProductCommandHandler(IProductRepository productRepository)
+		{
+			_productRepository = productRepository;
+		}
 
-        public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
-        {
-            var product = new Product
-            {
-                Name = request.Name,
-                Price = request.Price,
-                Stock = request.Stock
-            };
+		public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+		{
+			var product = new Product
+			{
+				Name = request.Name,
+				Price = request.Price,
+				Stock = request.Stock
+			};
 
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return product.Id; // Return the Id of the newly created product
-        }
-    }
+			return await _productRepository.AddAsync(product);
+		}
+	}
 }
