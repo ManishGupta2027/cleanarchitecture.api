@@ -19,7 +19,7 @@ namespace ProductApp.Infrastructure.Repositories.Products
 			_dbContext = dbContext;
 		}
 
-		public async Task<Product> GetByIdAsync(int id)
+		public async Task<Product> GetByIdAsync(Guid id)
 		{
 			return await _dbContext.Products.FindAsync(id);
 		}
@@ -29,7 +29,7 @@ namespace ProductApp.Infrastructure.Repositories.Products
 			return await _dbContext.Products.ToListAsync();
 		}
 
-		public async Task<int> AddAsync(Product product)
+		public async Task<Guid> AddAsync(Product product)
 		{
 			_dbContext.Products.Add(product);
 			await _dbContext.SaveChangesAsync();
@@ -42,7 +42,7 @@ namespace ProductApp.Infrastructure.Repositories.Products
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public async Task DeleteAsync(int id)
+		public async Task DeleteAsync(Guid id)
 		{
 			var product = await _dbContext.Products.FindAsync(id);
 			if (product != null)

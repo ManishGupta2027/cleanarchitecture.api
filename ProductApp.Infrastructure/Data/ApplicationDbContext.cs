@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductApp.Domain.Entities;
+using ProductApp.Domain.Entities.Brands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,11 @@ namespace ProductApp.Infrastructure.Data
 		}
 
 		public DbSet<Product> Products { get; set; }
+		public DbSet<Brand> Brands { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-		}
+        }
 	}
 }

@@ -9,10 +9,10 @@ namespace ProductApp.Application.Services.Products
 {
 	public interface IProductService
 	{
-		Task<int> CreateProductAsync(ProductDto productDto);
+		Task<Guid> CreateProductAsync(ProductDto productDto);
 		Task UpdateProductAsync(ProductDto productDto);
-		Task<ProductDto> GetProductByIdAsync(int id);
+		Task<ProductDto> GetProductByIdAsync(Guid id);
 		Task<List<ProductDto>> GetAllProductsAsync();
-		Task DeleteProductAsync(int id);
+		Task DeleteProductAsync(Guid id);
 	}
 }

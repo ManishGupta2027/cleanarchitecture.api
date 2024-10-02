@@ -10,6 +10,6 @@ namespace ProductApp.Application.CQRS.Queries
 {
     public class GetProductByIdQuery : IRequest<ProductDto>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -21,24 +21,24 @@ namespace ProductApp.API.Controllers
 
 		// POST: api/products
 		[HttpPost]
-		public async Task<ActionResult<ApiResponse<int>>> CreateProduct([FromBody] CreateProductCommand command)
+		public async Task<ActionResult<ApiResponse<Guid>>> CreateProduct([FromBody] CreateProductCommand command)
 		{
 			try
 			{
 				var productId = await _mediator.Send(command);
-				var response = new ApiResponse<int>(true, productId, "Product created successfully.", StatusCodes.Status201Created);
+				var response = new ApiResponse<Guid>(true, productId, "Product created successfully.", StatusCodes.Status201Created);
 				return CreatedAtAction(nameof(GetProductById), new { id = productId }, response);
 			}
 			catch (Exception ex)
 			{
-				var response = new ApiResponse<int>(false, 0, $"Error creating product: {ex.Message}", StatusCodes.Status500InternalServerError);
+				var response = new ApiResponse<Guid>(false, Guid.Empty, $"Error creating product: {ex.Message}", StatusCodes.Status500InternalServerError);
 				return StatusCode(StatusCodes.Status500InternalServerError, response);
 			}
 		}
 
 		// PUT: api/products/{id}
 		[HttpPut("{id}")]
-		public async Task<ActionResult<BoolResponse>> UpdateProduct(int id, [FromBody] UpdateProductCommand command)
+		public async Task<ActionResult<BoolResponse>> UpdateProduct(Guid id, [FromBody] UpdateProductCommand command)
 		{
 			try
 			{
@@ -58,7 +58,7 @@ namespace ProductApp.API.Controllers
 
 		// GET: api/products/{id}
 		[HttpGet("{id}")]
-		public async Task<ActionResult<ApiResponse<ProductDto>>> GetProductById(int id)
+		public async Task<ActionResult<ApiResponse<ProductDto>>> GetProductById(Guid id)
 		{
 			try
 			{
@@ -101,7 +101,7 @@ namespace ProductApp.API.Controllers
 
 		// DELETE: api/products/{id}
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<BoolResponse>> DeleteProduct(int id)
+		public async Task<ActionResult<BoolResponse>> DeleteProduct(Guid id)
 		{
 			try
 			{

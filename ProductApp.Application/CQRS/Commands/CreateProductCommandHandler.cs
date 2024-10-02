@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Application.CQRS.Commands
 {
-	public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
+	public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
 	{
 		private readonly IProductService _productService;
 
@@ -20,14 +20,15 @@ namespace ProductApp.Application.CQRS.Commands
 			_productService = productService;
 		}
 
-		public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+		public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
 		{
 			var productDto = new ProductDto
 			{
 				Name = request.Name,
 				Price = request.Price,
-				Stock = request.Stock
-			};
+                StockCode = request.StockCode,
+				StockQTY = request.StockQTY
+            };
 
 			return await _productService.CreateProductAsync(productDto);
 		}

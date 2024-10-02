@@ -27,10 +27,11 @@ namespace ProductApp.Application.CQRS.Commands
 			{
 				Id = request.Id,
 				Name = request.Name,
+                StockCode = request.StockCode,
 				Price = request.Price,
-				Stock = request.Stock
-				// Map other properties as needed
-			};
+                StockQTY = request.StockQTY
+                // Map other properties as needed
+            };
 
 			// Call the product service to update the product
 			await _productService.UpdateProductAsync(productDto);

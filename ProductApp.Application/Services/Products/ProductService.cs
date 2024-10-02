@@ -21,7 +21,7 @@ namespace ProductApp.Application.Services.Products
 			_mapper = mapper;
 		}
 
-		public async Task<int> CreateProductAsync(ProductDto productDto)
+		public async Task<Guid> CreateProductAsync(ProductDto productDto)
 		{
 			var product = _mapper.Map<Product>(productDto);
 			// Business logic, e.g., discount calculations
@@ -37,17 +37,17 @@ namespace ProductApp.Application.Services.Products
 			{
 				throw new KeyNotFoundException("Product not found");
 			}
-
+			//StockCode Not Updated its Unique
 			// Update the product entity properties
 			product.Name = productDto.Name;
 			product.Price = productDto.Price;
-			product.Stock = productDto.Stock;
+			product.StockQTY = productDto.StockQTY;
 			// Update other properties as needed
 
 			await _productRepository.UpdateAsync(product);
 		}
 
-		public async Task<ProductDto> GetProductByIdAsync(int id)
+		public async Task<ProductDto> GetProductByIdAsync(Guid id)
 		{
 			var product = await _productRepository.GetByIdAsync(id);
 			if (product == null)
@@ -63,7 +63,7 @@ namespace ProductApp.Application.Services.Products
 			return _mapper.Map<List<ProductDto>>(products);
 		}
 
-		public async Task DeleteProductAsync(int id)
+		public async Task DeleteProductAsync(Guid id)
 		{
 			// Ensure the product exists (optional)
 			var product = await _productRepository.GetByIdAsync(id);

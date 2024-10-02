@@ -8,9 +8,10 @@ namespace ProductApp.Application.DTOs
 {
     public class ProductDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
+        public string StockCode { get; set; }
         public decimal Price { get; set; }
-        public int Stock { get; set; }
+        public int StockQTY { get; set; }
     }
 }
