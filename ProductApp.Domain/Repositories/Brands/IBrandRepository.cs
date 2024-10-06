@@ -1,4 +1,5 @@
-﻿using ProductApp.Domain.Entities.Brands;
+﻿using ProductApp.Domain.Entities;
+using ProductApp.Domain.Entities.Brands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace ProductApp.Domain.Repositories.Brands
 {
     public interface IBrandRepository
     {
-        //Task<Brand>GetByIdAnsyc(Guid id);
+        Task<Brand> GetByIdAnsyc(Guid id);
         Task<List<Brand>> GetAllAsync();
         Task<Guid> AddAsync(Brand brand);
+        Task UpdateAsync(Brand brand);
+        Task DeleteAsync(Guid id);
     }
 }

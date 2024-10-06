@@ -25,12 +25,43 @@ namespace ProductApp.Application.Services.Brands
             var brand = _mapper.Map<Brand>(brandDto);
             return await _brandRepository.AddAsync(brand);
         }
+        public async Task UpdateBrandAsync(BrandDto brandDto)
+        {
+            var brand = await _brandRepository.GetByIdAnsyc(brandDto.Id);
+            if (brand == null)
+            {
+                throw new Exception("Brand not found");
+            }
+            brand.Name = brandDto.Name;
+            brand.Description = brandDto.Description;
+            brand.ShortDescription = brandDto.ShortDescription;
+            await _brandRepository.UpdateAsync(brand);
+        }
+
+        public async Task<BrandDto> GetBrandByIdAsync(Guid id)
+        {
+           var brand = await _brandRepository.GetByIdAnsyc(id);
+            if(brand == null)
+
+            {
+                throw new Exception("Brand Not Found");
+            }
+            return _mapper.Map<BrandDto>(brand);
+        }
 
         public async Task<List<BrandDto>> GetAllBrandsAsync()
         {
-            var brands = await _brandRepository.GetAllAsync();
-            return _mapper.Map<List<BrandDto>>(brands);
+            var brand = await _brandRepository.GetAllAsync();
+            return _mapper.Map<List<BrandDto>>(brand);
+        }
+
+        public async Task DeleteBrandAsync(Guid id)
+        {
+            var brand = await _brandRepository.GetByIdAnsyc(id);
+            if(brand == null)
+            {
+                throw new Exception("Brnad Not Found");
+            }
         }
     }
 }
-s

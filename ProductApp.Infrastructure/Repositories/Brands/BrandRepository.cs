@@ -17,12 +17,6 @@ namespace ProductApp.Infrastructure.Repositories.Brands
         {
             _dbContext = dbContext;
         }
-
-        public async Task<List<Brand>> GetAllAsync()
-        {
-            return await _dbContext.Brands.ToListAsync();
-        }
-
         public async Task<Guid> AddAsync(Brand brand)
         {
             _dbContext.Brands.Add(brand);
@@ -30,5 +24,29 @@ namespace ProductApp.Infrastructure.Repositories.Brands
             return brand.Id;
         }
 
+        public async Task DeleteAsync(Guid id)
+        {var brand = await _dbContext.Brands.FindAsync(id);
+            if (brand != null)
+            {
+                _dbContext.Brands.Remove(brand);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Brand>> GetAllAsync()
+        {
+           return await _dbContext.Brands.ToListAsync();
+        }
+
+        public async Task<Brand> GetByIdAnsyc(Guid id)
+        {
+            return await _dbContext.Brands.FindAsync(id);
+        }
+
+        public async Task UpdateAsync(Brand brand)
+        {
+           _dbContext.Brands.Update(brand);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
